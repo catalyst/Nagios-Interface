@@ -1,4 +1,5 @@
 blib
 Makefile(.old)?$
 \.bak
-\.git
+^\.git
+~$
