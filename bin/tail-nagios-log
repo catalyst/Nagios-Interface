@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+# this is a little script which outputs lines from the nagios log.
+# This was written to be called from an ssh forced command.
+
+use File::Tail;
+
+$SIG{HUP}=sub{exit};
+$|=1;
+
+$ft=File::Tail->new(
+  name => "/var/log/nagios3/nagios.log",
+  maxinterval => 5,
+  interval => 2,
+  tail => 10,
+);
+
+do {
+  $l = $ft->read;
+  print $l;
+}
+  while defined $l;
