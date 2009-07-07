@@ -1,0 +1,4 @@
+blib
+Makefile(.old)?$
+\.bak
+\.git

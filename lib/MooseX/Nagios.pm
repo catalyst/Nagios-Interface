@@ -9,6 +9,8 @@ sub default_author {
 	$ENV{LOGNAME}||$ENV{USER}||(getpwuid($<))[0]
 }
 
+our $VERSION = "0.01";
+
 1;
 
 __END__
