@@ -4,6 +4,7 @@ use Test::More no_plan;
 
 use strict;
 use warnings;
+use IO::Handle;
 
 BEGIN {
 	use_ok("MooseX::Nagios::Logfile");
@@ -32,3 +33,21 @@ LOG
 isa_ok($event, "MooseX::Nagios::ServiceAlert", "parsed OK!");
 is($event->soft, 1, "converted SOFT to 1");
 
+while ( my $line = <DATA> ) {
+	$event = $parser->parse_logline($line);
+	pass("Parsed a $event OK");
+}
+if ( $@ ) {
+	diag("Last failure: $@");
+}
+ok(eof(DATA), "Parsed all events successfully");
+
+__END__
+[1246881600] LOG ROTATION: DAILY
+[1246881600] LOG VERSION: 2.0
+[1246881600] CURRENT HOST STATE: shire-router;UP;HARD;1;PING OK - Packet loss = 0%, RTA = 17.18 ms
+[1246881600] CURRENT HOST STATE: frodo;UP;HARD;1;
+[1246881600] CURRENT SERVICE STATE: shire-router;Interface Status: Cisco Border Router;OK;HARD;1;FastEthernet0/1:UP, Serial0/2/0:UP, Serial0/2/0.1:UP, Vlan1:UP, FastEthernet0/3/3:UP, Tunnel2:UP, Tunnel1:UP:7 UP: OK
+[1246881602] SERVICE ALERT: frodo;Load Average;OK;SOFT;2;OK - load average: 4.00, 4.28, 3.90
+[1246881852] Auto-save of retention data completed successfully.
+[1246912992] HOST ALERT: bilbo;DOWN;SOFT;1;WARNING: ANY query not answered
