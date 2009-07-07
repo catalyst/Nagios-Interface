@@ -51,3 +51,4 @@ __END__
 [1246881602] SERVICE ALERT: frodo;Load Average;OK;SOFT;2;OK - load average: 4.00, 4.28, 3.90
 [1246881852] Auto-save of retention data completed successfully.
 [1246912992] HOST ALERT: bilbo;DOWN;SOFT;1;WARNING: ANY query not answered
+[1246932412] HOST FLAPPING ALERT: frodo;STARTED; Host appears to have started flapping (20.9% change > 20.0% threshold)

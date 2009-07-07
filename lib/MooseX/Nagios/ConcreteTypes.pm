@@ -340,6 +340,93 @@ sub ok {
 	1;
 }
 
+=head1 MESSAGES RELATING TO FLAPPING
+
+=head2 HOST FLAPPING ALERT
+
+=cut
+
+package MooseX::Nagios::HostFlappingAlert;
+use Moose;
+with 'MooseX::Nagios::Alert::Flapping', 'MooseX::Nagios::Alert::Host';
+
+has '+up' =>
+	required => 0,
+	;
+
+has '+soft' =>
+	required => 0,
+	;
+
+sub up {
+	my $self = shift;
+	!$self->flapping;
+}
+
+sub log_info_order {
+	qw(host flapping message);
+}
+
+sub as_string {
+	my $self = shift;
+	sprintf( "Host %s has %s flapping %s",
+		 $self->host,
+		 ($self->flapping? "started" : "stopped"),
+		 $self->message,
+		 );
+}
+
+sub ok {
+	my $self = shift;
+	!$self->flapping;
+}
+
+sub match {
+	my $self = shift;
+	my $other = shift;
+	MooseX::Nagios::Alert::Host::match($self, $other);
+}
+
+package MooseX::Nagios::ServiceFlappingAlert;
+use Moose;
+with 'MooseX::Nagios::Alert::Service', 'MooseX::Nagios::Alert::Flapping';
+
+sub log_info_order {
+	qw(host service flapping message);  # guessed
+}
+
+has '+state' =>
+	required => 0,
+	;
+
+has '+soft' =>
+	required => 0,
+	;
+
+sub state {
+	my $self = shift;
+	$self->flapping ? "CRITICAL" : "OK";
+}
+
+sub as_string {
+	my $self = shift;
+	sprintf( "%s has %s flapping %s",
+		 $self->show_service,
+		 ($self->flapping? "started" : "stopped"),
+		 $self->message,
+		 );
+}
+
+sub ok {
+	my $self = shift;
+	!$self->flapping;
+}
+
+sub match {
+	my $self = shift;
+	my $other = shift;
+	MooseX::Nagios::Alert::Service::match($self, $other);
+}
 
 =head1 MESSAGES THAT ARE SPECIALLY CONSTRUCTED
 
