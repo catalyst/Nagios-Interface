@@ -1,0 +1,7 @@
+#!/usr/bin/perl -w
+
+use MooseX::Nagios::CLI::Logfile;
+
+my $app = MooseX::Nagios::CLI::Logfile->new_with_options;
+
+$app->run;

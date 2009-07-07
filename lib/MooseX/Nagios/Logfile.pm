@@ -4,6 +4,8 @@ package MooseX::Nagios::Logfile;
 use MooseX::Nagios::ConcreteTypes;
 use Moose;
 
+use IO::File;
+
 use Carp;
 
 has 'source' =>
@@ -96,9 +98,10 @@ has 'fh' =>
 sub BUILD {
 	my $self = shift;
 	if ( $self->filename ) {
-		$self->fh(IO::File->new($self->filename, "r"))
+		my $handle = IO::File->new($self->filename, "r")
 			or croak "Could not open '".$self->filename
 				." for reading; $!";
+		$self->fh($handle);
 	}
 }
 
@@ -109,7 +112,7 @@ sub get_message {
 			$self->tail->read;
 		}
 		elsif ( $self->fh ) {
-			$self->fh->readline;
+			$self->fh->getline;
 		}
 	};
 	defined($line) or return undef;

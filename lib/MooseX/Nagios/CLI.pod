@@ -1,0 +1,18 @@
+=head1 NAME
+
+MooseX::Nagios::CLI - MooseX::Nagios-based CLIs
+
+=head1 SYNOPSIS
+
+ use MooseX::Nagios::CLI::XXX;
+
+ my $app = MooseX::Nagios::CLI::XXX->new_with_options;
+ $app->run;
+
+=head1 DESCRIPTION
+
+This namespace is for CLIs which test or make use of the various
+MooseX::Nagios classes.
+
+=cut
+
