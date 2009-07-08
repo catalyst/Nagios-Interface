@@ -1,7 +1,7 @@
 
-package MooseX::Nagios::Logfile;
+package Nagios::Interface::Logfile;
 
-use MooseX::Nagios::ConcreteTypes;
+use Nagios::Interface::ConcreteTypes;
 use Moose;
 
 use IO::File;
@@ -38,13 +38,13 @@ sub parse_logline {
 
 	if ( $fail ) {
 		if ( $fail =~ m{Auto-save.*completed success}) {
-			return MooseX::Nagios::IgnorableLogMessage->new
+			return Nagios::Interface::IgnorableLogMessage->new
 				(source => $self->source,
 				 when => $time,
 				 message => $fail);
 		}
 		elsif ( $fail =~ m{Caught (\w+)} ) {
-			return MooseX::Nagios::SignalDeath->new
+			return Nagios::Interface::SignalDeath->new
 				(source => $self->source,
 				 when => $time,
 				 signal => $1,
@@ -65,9 +65,9 @@ sub parse_logline {
 
 	my $class = lc $type;
 	$class =~ s{(\w+)\s*}{ucfirst($1)}eg;
-	$class = "MooseX::Nagios::$class";
+	$class = "Nagios::Interface::$class";
 
-	unless ( eval { $class->does("MooseX::Nagios::LogMessage") } ) {
+	unless ( eval { $class->does("Nagios::Interface::LogMessage") } ) {
 		die "unknown event type '$type'";
 	}
 

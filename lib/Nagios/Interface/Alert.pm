@@ -1,12 +1,12 @@
 
-package MooseX::Nagios::Alert;
+package Nagios::Interface::Alert;
 
 use Moose::Role;
 
 use Moose::Util::TypeConstraints;
 use MooseX::TimestampTZ;
 
-with 'MooseX::Nagios::LogMessage';
+with 'Nagios::Interface::LogMessage';
 
 has 'message' =>
 	isa => 'Str',
@@ -18,14 +18,14 @@ has 'count' =>
 	isa => 'Int',
 	is => 'ro';
 
-subtype 'MooseX::Nagios::SoftAlert'
+subtype 'Nagios::Interface::SoftAlert'
 	=> as 'Bool';
-coerce 'MooseX::Nagios::SoftAlert'
+coerce 'Nagios::Interface::SoftAlert'
 	=> from 'Str'
 	=> via { $_ eq "SOFT" ? 1 : 0 };
 
 has 'soft' =>
-	isa => 'MooseX::Nagios::SoftAlert',
+	isa => 'Nagios::Interface::SoftAlert',
 	is => 'rw',
 	required => 1,
 	coerce => 1;

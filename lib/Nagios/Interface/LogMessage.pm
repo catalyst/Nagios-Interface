@@ -1,4 +1,4 @@
-package MooseX::Nagios::LogMessage;
+package Nagios::Interface::LogMessage;
 
 use strict;
 use warnings;
@@ -53,7 +53,7 @@ sub nagios_label {
 	$labels{$class} ||= do {
 		my $label = $class;
 		$DB::single = 1;
-		$label =~ s{MooseX::Nagios::}{};
+		$label =~ s{Nagios::Interface::}{};
 		$label =~ s{([a-z])([A-Z])}{${1}_$2}g;
 		$label = uc($label);
 		$label =~ s{SERVICE}{SVC}g;

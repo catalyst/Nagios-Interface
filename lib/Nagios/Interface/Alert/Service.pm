@@ -1,5 +1,5 @@
 
-package MooseX::Nagios::Alert::Service;
+package Nagios::Interface::Alert::Service;
 
 use Moose::Role;
 use Moose::Util::TypeConstraints;
@@ -19,7 +19,7 @@ has 'state' =>
 sub match {
 	my $self = shift;
 	my $other = shift;
-	my $super_ok = MooseX::Nagios::Alert::match($self, $other);
+	my $super_ok = Nagios::Interface::Alert::match($self, $other);
 	my $am_ok = ( $other->can("service") and
 		      $self->service eq $other->service);
 	Nagios::Alert::DEBUG("match = $am_ok (super = $super_ok)\n");

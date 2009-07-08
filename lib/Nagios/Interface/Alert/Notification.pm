@@ -1,9 +1,9 @@
 
-package MooseX::Nagios::Alert::Notification;
+package Nagios::Interface::Alert::Notification;
 
 use Moose::Util::TypeConstraints;
 use Moose::Role;
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert';
 
 enum 'Nagios::NotifyMethod' => qw[email sms];
 coerce 'Nagios::NotifyMethod'

@@ -7,12 +7,12 @@ use warnings;
 use FindBin qw($Bin);
 
 BEGIN {
-	use_ok("MooseX::Nagios::Status");
+	use_ok("Nagios::Interface::Status");
 }
 
 my $test_file = "$Bin/status.dat";
 
-my $parser = MooseX::Nagios::Status->new(
+my $parser = Nagios::Interface::Status->new(
 	filename => $test_file,
 	);
 

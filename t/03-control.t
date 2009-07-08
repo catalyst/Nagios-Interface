@@ -7,23 +7,23 @@ use warnings;
 use FindBin qw($Bin);
 
 BEGIN {
-	use_ok("MooseX::Nagios::Control");
+	use_ok("Nagios::Interface::Control");
 }
-use MooseX::Nagios::ConcreteTypes;
+use Nagios::Interface::ConcreteTypes;
 
 my $test_control_file = "$Bin/test_control.cmd";
 unlink($test_control_file);
 open my $control_fh, "+>$test_control_file"
 	or die $!;
 
-my $control = MooseX::Nagios::Control->new(
+my $control = Nagios::Interface::Control->new(
 	filename => $test_control_file,
 	);
 
 my $begin = time;
 my $end   = $begin + 15*60;
 
-my $svc_downtime = MooseX::Nagios::ScheduleServiceDowntime->new(
+my $svc_downtime = Nagios::Interface::ScheduleServiceDowntime->new(
 	host  => "frodo",
 	service => "Visibility",
 	begin => $begin,

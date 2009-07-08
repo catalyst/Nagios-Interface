@@ -1,9 +1,9 @@
 
-package MooseX::Nagios;
+package Nagios::Interface;
 
 use Class::AutoUse
-	qw(MooseX::Nagios::Logfile MooseX::Nagios::Status
-	   MooseX::Nagios::Control);
+	qw(Nagios::Interface::Logfile Nagios::Interface::Status
+	   Nagios::Interface::Control);
 
 sub default_author {
 	$ENV{LOGNAME}||$ENV{USER}||(getpwuid($<))[0]
@@ -17,14 +17,14 @@ __END__
 
 =head1 NAME
 
-MooseX::Nagios - dig Moose antlers into Nagios
+Nagios::Interface - Run-time interaction with Nagios
 
 =head1 SYNOPSIS
 
- use MooseX::Nagios;
+ use Nagios::Interface;
 
  # set up a logfile reader which uses File::Tail
- my $logfile = MooseX::Nagios::Logfile->new(
+ my $logfile = Nagios::Interface::Logfile->new(
          tail => File::Tail->new(
                  name => "/var/log/nagios3/nagios.log",
                  maxinterval => 5,
@@ -42,16 +42,16 @@ MooseX::Nagios - dig Moose antlers into Nagios
  # returned messages have roles for commonality and classes for type.
  print $log_message->host . " is " .
       ($log_message->up ? "UP" : "DOWN");
-    if $log_message->does("MooseX::Nagios::Alert::Host");
+    if $log_message->does("Nagios::Interface::Alert::Host");
 
  # controlling via the nagios control file
- my $control = MooseX::Nagios::Control->new(
+ my $control = Nagios::Interface::Control->new(
          filename => "/var/lib/nagios3/rw/nagios.cmd",
          );
 
  # make any kind of log message to issue as a command...
- # see MooseX::Nagios::ConcreteTypes for a list
- my $svc_downtime = MooseX::Nagios::ScheduleServiceDowntime->new(
+ # see Nagios::Interface::ConcreteTypes for a list
+ my $svc_downtime = Nagios::Interface::ScheduleServiceDowntime->new(
          begin => time,
          end   => time + 15 * 60,
          fixed => 1,
@@ -61,7 +61,7 @@ MooseX::Nagios - dig Moose antlers into Nagios
  my $entry_time = $control->issue($svc_downtime);
 
  # reading the status log
- my $status = MooseX::Nagios::Status->new(
+ my $status = Nagios::Interface::Status->new(
          filename => "/var/cache/nagios3/status.dat",
          );
 
@@ -80,7 +80,7 @@ MooseX::Nagios - dig Moose antlers into Nagios
  # now cancel the downtime, to complete the example
  $control->issue(
          map {
-                 MooseX::Nagios::DeleteServiceDowntime->new(
+                 Nagios::Interface::DeleteServiceDowntime->new(
                          downtime_id => $_
                  )
          } $downtime_ids->members
@@ -88,7 +88,7 @@ MooseX::Nagios - dig Moose antlers into Nagios
 
 =head1 DESCRIPTION
 
-B<MooseX::Nagios> is currently a fledgling module for basic run-time
+B<Nagios::Interface> is currently a fledgling module for basic run-time
 interaction with Nagios 3 instances.  There are no functions to parse
 or write configuration files (yet?), but it can parse most logfile
 messages, as well as write control messages and parse the status file
@@ -100,19 +100,19 @@ The main entry points of the modules are:
 
 =item *
 
-L<MooseX::Nagios::Logfile> - for parsing the nagios log file
+L<Nagios::Interface::Logfile> - for parsing the nagios log file
 
 =item *
 
-L<MooseX::Nagios::Status> - for parsing the nagios status file
+L<Nagios::Interface::Status> - for parsing the nagios status file
 
 =item *
 
-L<MooseX::Nagios::Control> - issuing commands to nagios
+L<Nagios::Interface::Control> - issuing commands to nagios
 
 =item *
 
-L<MooseX::Nagios::ConcreteTypes> - type registry of nagios messages, alerts, events, etc
+L<Nagios::Interface::ConcreteTypes> - type registry of nagios messages, alerts, events, etc
 
 =back
 

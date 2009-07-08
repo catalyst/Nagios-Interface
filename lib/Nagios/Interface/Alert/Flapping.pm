@@ -1,9 +1,9 @@
 
-package MooseX::Nagios::Alert::Flapping;
+package Nagios::Interface::Alert::Flapping;
 
 use Moose::Role;
 use Moose::Util::TypeConstraints;
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert';
 
 # 'FAIL' means Socket timeout
 subtype 'Nagios::FlapState'

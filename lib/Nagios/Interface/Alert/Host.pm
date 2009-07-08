@@ -1,9 +1,9 @@
 
-package MooseX::Nagios::Alert::Host;
+package Nagios::Interface::Alert::Host;
 
 use Moose::Util::TypeConstraints;
 use Moose::Role;
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert';
 
 subtype 'Nagios::HostState'
 	=> as 'Bool';

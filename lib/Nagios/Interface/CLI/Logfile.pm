@@ -1,8 +1,8 @@
 
-package MooseX::Nagios::CLI::Logfile;
+package Nagios::Interface::CLI::Logfile;
 
 use Moose;
-use MooseX::Nagios::Logfile;
+use Nagios::Interface::Logfile;
 use IO::Handle;
 
 with 'MooseX::Getopt';
@@ -22,7 +22,7 @@ sub run {
 	}
 
 	for my $file ( @filenames ) {
-		my $logfile = MooseX::Nagios::Logfile->new(
+		my $logfile = Nagios::Interface::Logfile->new(
 			($file eq "-"
 			 ? (fh => IO::Handle->new_from_fd(fileno(STDIN), "r"))
 			 : (filename => $file)
@@ -40,7 +40,7 @@ __END__
 
 =head1 NAME
 
-MooseX::Nagios::CLI::Logfile - CLI interface to Logfile module
+Nagios::Interface::CLI::Logfile - CLI interface to Logfile module
 
 =head1 SYNOPSIS
 
@@ -51,13 +51,13 @@ MooseX::Nagios::CLI::Logfile - CLI interface to Logfile module
 This is a program which reads in nagios log files and outputs
 interpreted versions of them.  It is currently only really useful for
 testing that all logged nagios messages are parsed by the
-MooseX::Nagios::LogMessage-doing classes in this distribution.
+Nagios::Interface::LogMessage-doing classes in this distribution.
 
 The default path to the nagios log is F</var/log/nagios3/nagios.log>
 
 =head1 SEE ALSO
 
-L<MooseX::Nagios>, L<MooseX::Nagios::Logfile>,
-L<MooseX::Nagios::LogMessage>
+L<Nagios::Interface>, L<Nagios::Interface::Logfile>,
+L<Nagios::Interface::LogMessage>
 
 =cut

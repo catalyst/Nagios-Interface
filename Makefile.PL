@@ -1,9 +1,9 @@
 use inc::Module::Install;
 
-name            ("MooseX-Nagios");
-abstract        ("Dig Moose Antlers into Nagios");
+name            ("Nagios-Interface");
+abstract        ("Run-time interaction with Nagios");
 author          ("Sam Vilain <samv@cpan.org>");
-version_from    ("lib/MooseX/Nagios.pm");
+version_from    ("lib/Nagios/Interface.pm");
 license         ("perl");
 
 requires        ("perl" => 5.008005);

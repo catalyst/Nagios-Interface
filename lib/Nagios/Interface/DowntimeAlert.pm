@@ -1,4 +1,4 @@
-package MooseX::Nagios::DowntimeAlert;
+package Nagios::Interface::DowntimeAlert;
 use Moose::Role;
 use Moose::Util::TypeConstraints;
 

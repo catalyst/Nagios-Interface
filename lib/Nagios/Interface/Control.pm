@@ -1,5 +1,5 @@
 
-package MooseX::Nagios::Control;
+package Nagios::Interface::Control;
 
 use Moose;
 use IO::File;
@@ -16,7 +16,7 @@ has 'fh' =>
 	required => 1,
 	default => sub {
 		my $self = shift;
-		die "no filename passed to MooseX::Nagios::Control object"
+		die "no filename passed to Nagios::Interface::Control object"
 			unless $self->filename;
 		IO::File->new($self->filename, "w");
 	},

@@ -1,15 +1,15 @@
 
-package MooseX::Nagios::Status;
+package Nagios::Interface::Status;
 
 =head1 NAME
 
-MooseX::Nagios::Status - parse the Nagios status.dat file
+Nagios::Interface::Status - parse the Nagios status.dat file
 
 =head1 SYNOPSIS
 
- use MooseX::Nagios::Status;
+ use Nagios::Interface::Status;
 
- my $status = MooseX::Nagios::Status->new(
+ my $status = Nagios::Interface::Status->new(
          filename => "/var/cache/nagios3/status.dat",
          );
 

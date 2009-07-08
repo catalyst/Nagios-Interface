@@ -1,4 +1,4 @@
-package MooseX::Nagios::IgnorableMessage;
+package Nagios::Interface::IgnorableMessage;
 
 use Moose::Role;
 

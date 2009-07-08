@@ -1,6 +1,6 @@
-package MooseX::Nagios::HostAlert;
+package Nagios::Interface::HostAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Host';
+with 'Nagios::Interface::Alert::Host';
 
 sub log_info_order {
 	qw( host up soft count message );

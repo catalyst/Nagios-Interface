@@ -12,12 +12,12 @@ correspond to the types of Nagios messages that are parsed.
 
 use strict;
 use warnings;
-use MooseX::Nagios::Alert;
-use MooseX::Nagios::LogMessage;
-use MooseX::Nagios::IgnorableMessage;
-use MooseX::Nagios::Alert::Notification;
-use MooseX::Nagios::Alert::Host;
-use MooseX::Nagios::Alert::Service;
+use Nagios::Interface::Alert;
+use Nagios::Interface::LogMessage;
+use Nagios::Interface::IgnorableMessage;
+use Nagios::Interface::Alert::Notification;
+use Nagios::Interface::Alert::Host;
+use Nagios::Interface::Alert::Service;
 
 =head1 MESSAGES
 
@@ -27,9 +27,9 @@ Logged when a host is seen to go 'up' or 'down'
 
 =cut
 
-package MooseX::Nagios::HostAlert;
+package Nagios::Interface::HostAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Host';
+with 'Nagios::Interface::Alert::Host';
 
 sub log_info_order {
 	qw( host up soft count message );
@@ -51,9 +51,9 @@ The boring version of the Host Alert that displays the 'current' state
 
 =cut
 
-package MooseX::Nagios::CurrentHostState;
+package Nagios::Interface::CurrentHostState;
 use Moose;
-extends 'MooseX::Nagios::HostAlert';
+extends 'Nagios::Interface::HostAlert';
 
 has '+current' =>
 	'default' => 1;
@@ -65,9 +65,9 @@ Some message went out to a notify target about a host alert
 
 =cut
 
-package MooseX::Nagios::HostNotification;
+package Nagios::Interface::HostNotification;
 use Moose;
-with ('MooseX::Nagios::Alert::Host', 'MooseX::Nagios::Alert::Notification');
+with ('Nagios::Interface::Alert::Host', 'Nagios::Interface::Alert::Notification');
 
 sub log_info_order {
 	qw( group host up method message );
@@ -91,10 +91,10 @@ Logged when a service has a warning logged against it etc
 
 =cut
 
-package MooseX::Nagios::ServiceAlert;
+package Nagios::Interface::ServiceAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Service';
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert::Service';
+with 'Nagios::Interface::Alert';
 
 sub log_info_order {
 	qw( host service state soft count message );
@@ -115,9 +115,9 @@ Another boring 'current status' version of a notify, of the service state.
 
 =cut
 
-package MooseX::Nagios::CurrentServiceState;
+package Nagios::Interface::CurrentServiceState;
 use Moose;
-extends 'MooseX::Nagios::ServiceAlert';
+extends 'Nagios::Interface::ServiceAlert';
 
 has '+current' =>
 	'default' => 1;
@@ -129,10 +129,10 @@ sent to a notifcation target.
 
 =cut
 
-package MooseX::Nagios::ServiceNotification;
+package Nagios::Interface::ServiceNotification;
 use Moose;
-with 'MooseX::Nagios::Alert::Service';
-with 'MooseX::Nagios::Alert::Notification';
+with 'Nagios::Interface::Alert::Service';
+with 'Nagios::Interface::Alert::Notification';
 
 has '+soft' =>
 	default => 0;
@@ -156,9 +156,9 @@ sub as_string {
 
 =cut
 
-package MooseX::Nagios::ScheduleForcedServiceCheck;
+package Nagios::Interface::ScheduleForcedServiceCheck;
 use Moose;
-with 'MooseX::Nagios::Alert', 'MooseX::Nagios::Alert::Service';
+with 'Nagios::Interface::Alert', 'Nagios::Interface::Alert::Service';
 use MooseX::TimestampTZ qw(epoch);
 
 has '+soft' =>
@@ -205,10 +205,10 @@ Someone scheduled downtime for a service.
 
 =cut
 
-package MooseX::Nagios::ScheduleServiceDowntime;
+package Nagios::Interface::ScheduleServiceDowntime;
 use Moose;
-with 'MooseX::Nagios::Alert::Service';
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert::Service';
+with 'Nagios::Interface::Alert';
 
 has '+soft' =>
 	required => 0;
@@ -255,7 +255,7 @@ has 'duration' =>
 has 'author' =>
 	isa => "Str",
 	is => "ro",
-	default => \&MooseX::Nagios::default_author,
+	default => \&Nagios::Interface::default_author,
 	;
 
 has 'comment' =>
@@ -285,10 +285,10 @@ A downtime period for a service has started/finished
 
 =cut
 
-package MooseX::Nagios::ServiceDowntimeAlert;
+package Nagios::Interface::ServiceDowntimeAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Service', 'MooseX::Nagios::DowntimeAlert';
-with 'MooseX::Nagios::Alert';
+with 'Nagios::Interface::Alert::Service', 'Nagios::Interface::DowntimeAlert';
+with 'Nagios::Interface::Alert';
 
 has '+soft' =>
 	required => 0;
@@ -316,9 +316,9 @@ A downtime period for a host has started/finished
 
 =cut
 
-package MooseX::Nagios::HostDowntimeAlert;
+package Nagios::Interface::HostDowntimeAlert;
 use Moose;
-with 'MooseX::Nagios::Alert', 'MooseX::Nagios::Alert::Host', 'MooseX::Nagios::DowntimeAlert';
+with 'Nagios::Interface::Alert', 'Nagios::Interface::Alert::Host', 'Nagios::Interface::DowntimeAlert';
 
 has '+soft' =>
 	required => 0;
@@ -346,9 +346,9 @@ sub ok {
 
 =cut
 
-package MooseX::Nagios::HostFlappingAlert;
+package Nagios::Interface::HostFlappingAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Flapping', 'MooseX::Nagios::Alert::Host';
+with 'Nagios::Interface::Alert::Flapping', 'Nagios::Interface::Alert::Host';
 
 has '+up' =>
 	required => 0,
@@ -384,12 +384,12 @@ sub ok {
 sub match {
 	my $self = shift;
 	my $other = shift;
-	MooseX::Nagios::Alert::Host::match($self, $other);
+	Nagios::Interface::Alert::Host::match($self, $other);
 }
 
-package MooseX::Nagios::ServiceFlappingAlert;
+package Nagios::Interface::ServiceFlappingAlert;
 use Moose;
-with 'MooseX::Nagios::Alert::Service', 'MooseX::Nagios::Alert::Flapping';
+with 'Nagios::Interface::Alert::Service', 'Nagios::Interface::Alert::Flapping';
 
 sub log_info_order {
 	qw(host service flapping message);  # guessed
@@ -425,7 +425,7 @@ sub ok {
 sub match {
 	my $self = shift;
 	my $other = shift;
-	MooseX::Nagios::Alert::Service::match($self, $other);
+	Nagios::Interface::Alert::Service::match($self, $other);
 }
 
 =head1 MESSAGES THAT ARE SPECIALLY CONSTRUCTED
@@ -433,15 +433,15 @@ sub match {
 These messages don't fit the regular format, and have exceptions - so
 these classes are manually created.
 
-=head2 MooseX::Nagios::SignalDeath
+=head2 Nagios::Interface::SignalDeath
 
 When you see a logged message about Nagios dying, create one of these.
 
 =cut
 
-package MooseX::Nagios::SignalDeath;
+package Nagios::Interface::SignalDeath;
 use Moose;
-with 'MooseX::Nagios::LogMessage';
+with 'Nagios::Interface::LogMessage';
 
 has 'signal' =>
 	is => "ro",
@@ -489,9 +489,9 @@ raise an exception if the version is different, so B<FIXME> ;-)
 
 =cut
 
-package MooseX::Nagios::LogVersion;
+package Nagios::Interface::LogVersion;
 use Moose;
-with 'MooseX::Nagios::LogMessage', 'MooseX::Nagios::IgnorableMessage';
+with 'Nagios::Interface::LogMessage', 'Nagios::Interface::IgnorableMessage';
 
 has '+host' =>
 	required => 0;
@@ -521,9 +521,9 @@ I guess when the log file is turned over this is logged?!
 
 =cut
 
-package MooseX::Nagios::LogRotation;
+package Nagios::Interface::LogRotation;
 use Moose;
-with 'MooseX::Nagios::LogMessage', 'MooseX::Nagios::IgnorableMessage';
+with 'Nagios::Interface::LogMessage', 'Nagios::Interface::IgnorableMessage';
 has '+host' =>
 	required => 0;
 
@@ -545,16 +545,16 @@ sub as_string {
 
 }
 
-=head2 MooseX::Nagios::IgnorableLogMessage
+=head2 Nagios::Interface::IgnorableLogMessage
 
-This is specially constructed, like the MooseX::Nagios::SignalDeath message.
+This is specially constructed, like the Nagios::Interface::SignalDeath message.
 It's currently only used for 'auto save'-type messages
 
 =cut
 
-package MooseX::Nagios::IgnorableLogMessage;
+package Nagios::Interface::IgnorableLogMessage;
 use Moose;
-with 'MooseX::Nagios::LogMessage', 'MooseX::Nagios::IgnorableMessage';
+with 'Nagios::Interface::LogMessage', 'Nagios::Interface::IgnorableMessage';
 
 has '+host' =>
 	required => 0;

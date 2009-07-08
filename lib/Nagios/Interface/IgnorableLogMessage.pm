@@ -1,7 +1,7 @@
 
-package MooseX::Nagios::IgnorableLogMessage;
+package Nagios::Interface::IgnorableLogMessage;
 use Moose;
-with 'MooseX::Nagios::LogMessage', 'MooseX::Nagios::IgnorableMessage';
+with 'Nagios::Interface::LogMessage', 'Nagios::Interface::IgnorableMessage';
 
 has '+host' =>
 	required => 0;
